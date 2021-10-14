@@ -1,6 +1,6 @@
 #coding=utf-8
 import requests
-from threading import Thread
+from threading import *
 import sys
 import getopt
 '''requests用于请求目标站点；
@@ -35,11 +35,11 @@ class request_performer(Thread):
         Thread.__init__(self)
         try:
             self.word = word.split("\n")[0]
-            self.urly = url.replace('FUZZ',self.word)#将FUZZ替换为字典
+            self.urly = url.replace('/FUZZ',self.word)#将FUZZ替换为字典
             self.url = self.urly
         except Exception as e:
             print(e)
-
+ #写一个类继承自Thread类，重写run方法。用start方法启动线程 当函数结束时,线程自动终止
     def run(self):
         try:
             r = requests.get(self.url)
@@ -48,6 +48,7 @@ class request_performer(Thread):
         except Exception as e:
             print(e)
 #启动request_performer()类
+#launcher_thread(words,threads,url)
 def launcher_thread(names,th,url):
     global i
     i = []
@@ -60,6 +61,8 @@ def launcher_thread(names,th,url):
                 i[0] = i[0]+1
                 thread = request_performer(n,url)
                 thread.start()
+                '''length = len(enumerate())
+                print('当前运行的线程数为：%d' % length)'''
         except KeyboardInterrupt:
             print("用户停止了程序运行。完成探测")
             sys.exit()
